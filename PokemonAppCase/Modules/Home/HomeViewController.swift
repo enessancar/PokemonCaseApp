@@ -33,7 +33,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func configureCollectionView() {
-        collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.identifier)
+        collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.reuseIdentifier)
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -62,7 +62,7 @@ extension HomeViewController: UICollectionViewDataSource {
         pokemonsModel.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.identifier, for: indexPath) as? HomeCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.reuseIdentifier, for: indexPath) as? HomeCollectionViewCell else {
             fatalError()
         }
         let model = pokemonsModel[indexPath.item]
@@ -70,6 +70,7 @@ extension HomeViewController: UICollectionViewDataSource {
         return cell
     }
 }
+
 //MARK: - UICollectionView Delegate
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -77,6 +78,7 @@ extension HomeViewController: UICollectionViewDelegate {
         presenter.selectPokemon(at: indexPath.item)
     }
 }
+
 //MARK: - UICollectionView DelegateFlowLayout
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -92,6 +94,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         15
     }
 }
+
 //MARK: - HomeViewProtocol
 extension HomeViewController: HomeViewProtocol {
     func handleOutput(with output: HomePresenterOutput) {

@@ -10,6 +10,7 @@ import Foundation
 struct PokemonAbilityModel: Decodable {
     let abilities: [AbilityItem]
     let sprites: PokemonImage
+    let species: Species
 }
 
 struct AbilityItem: Decodable {
@@ -30,9 +31,22 @@ enum CodingKeys: String, CodingKey {
 }
 
 struct CombinedArray {
-    let name: String
+    let name: String?
     let image: String?
     let abilities: [String]
     
+    var _image: String {
+        image ?? "N/A"
+    }
+    
+    var _name: String {
+        name ?? "N/A"
+    }
+}
+
+// MARK: - Species
+struct Species: Decodable {
+    let name: String
+    let url: String
 }
 

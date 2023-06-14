@@ -13,9 +13,17 @@ final class HomeDetailView: UIViewController {
     
     //MARK: - Properties
     private let pokemonImage = CustomImage(cornerRadius: 10)
-    private let pokemonsName = CustomLabel(backgroundColor: .clear, textColor: .black, size: 28, textAlignment: .center)
+    private let pokemonsName = CustomLabel(backgroundColor: .clear, textColor: .label, size: 28, textAlignment: .center)
     private let pokemonAbilities = CustomLabel(backgroundColor: .clear, textColor: .secondaryLabel, size: 25, textAlignment: .center)
     
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [pokemonImage, pokemonsName, pokemonAbilities])
+        stackView.axis = .vertical
+        stackView.spacing = 12
+        stackView.distribution = .fill
+        stackView.alignment = .center
+        return stackView
+    }()
     var presenter: HomeDetailPresenterProtocol!
     
     //MARK: - Lifecycle
@@ -27,33 +35,21 @@ final class HomeDetailView: UIViewController {
     }
 }
 
-//MARK: - HomeDetailView
+//MARK: - View Configure
 extension HomeDetailView {
     
     private func layout() {
-        view.addSubviews(views: pokemonImage, pokemonsName, pokemonAbilities)
+        view.addSubview(stackView)
+        
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(30)
+            make.leading.equalToSuperview().offset(12)
+            make.trailing.equalToSuperview().offset(-12)
+        }
         
         pokemonImage.contentMode = .scaleAspectFill
         pokemonImage.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview().offset(-10)
-            make.height.width.equalTo(175)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(30)
-        }
-        
-        pokemonsName.snp.makeConstraints { make in
-            make.top.equalTo(pokemonImage.snp.bottom).offset(50)
-            make.leading.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview().offset(-10)
-            make.height.equalTo(50)
-        }
-        
-        pokemonAbilities.numberOfLines = 0
-        pokemonAbilities.snp.makeConstraints { make in
-            make.top.equalTo(pokemonsName.snp.bottom).offset(12)
-            make.leading.equalToSuperview().offset(12)
-            make.trailing.equalToSuperview().offset(-12)
-            make.height.equalTo(80)
+            make.width.height.equalTo(175)
         }
     }
 }
@@ -62,12 +58,11 @@ extension HomeDetailView {
 extension HomeDetailView: HomeDetailViewProtocol {
 
     func updateView(with model: CombinedArray) {
-        pokemonImage.kf.setImage(with: model.image?.asUrl)
-        pokemonsName.text = model.name.capitalized
+        pokemonImage.kf.setImage(with: model._image.asUrl)
+        pokemonsName.text = model._name.capitalized
         pokemonAbilities.text = "Skills: \(model.abilities.joined(separator: ",").capitalized)"
     }
     
     func handleOutput(with output: HomeDetailPresenterOutput) {
-        
     }
 }

@@ -11,7 +11,7 @@ final class HomeInteractor: HomeInteractorProtocol {
     
     weak var delegate: HomeInteractorDelegate?
     private let service: PokemonServiceInterface
-    private let pokemonsCount: Int = 20
+    private let pokemonsCount: Int = 30
     private var combinedArray: [CombinedArray] = []
     
     init(service: PokemonServiceInterface = PokemonService(service: CoreService())) {
@@ -21,6 +21,7 @@ final class HomeInteractor: HomeInteractorProtocol {
     func load() {
         fetchPokemons()
     }
+    
     func fetchPokemons() {
         service.fetchPokemons(endPoint: .getPokemons(count: pokemonsCount)) { [weak self] results in
             guard let self = self else { return }

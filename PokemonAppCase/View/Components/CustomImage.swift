@@ -11,6 +11,7 @@ class CustomImage: UIImageView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configure()
     }
     
     required init?(coder: NSCoder) {
@@ -24,7 +25,7 @@ class CustomImage: UIImageView {
     
     private func configure() {
         clipsToBounds = true
-        contentMode = .scaleAspectFill
+        contentMode = .scaleAspectFit
         layer.masksToBounds = true
     }
 }
